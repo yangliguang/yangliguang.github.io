@@ -462,6 +462,236 @@
             
               
                 
+                <a class="post-title-link" href="/2016/05/30/Java中final详解/" itemprop="url">
+                  Javaz中final详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-30T23:59:18+08:00" content="2016-05-30">
+              2016-05-30
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/30/Java中final详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/30/Java中final详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>final变量</li>
+</ol>
+<p>变量一旦被初始化便不可改变(对基本类型来说，值不可变，对数组和对象来说，引用不可变)，初始化可以在两个地方，一是定义处，二是构造方法中，两者二选一。</p>
+<p>当函数参数为final类型时，可以读取该参数，但无法修改。</p>
+<p>当方法中的内部类在用到方法的参变量时，此参变也必须声明为final才可使用。</p>
+<ol>
+<li>final方法</li>
+</ol>
+<p>如果一个类不允许其子类覆盖某个方法，则可以把该方法声明为final方法。</p>
+<p>使用final方法原因有二:</p>
+<p>第一、把方法锁定，防止任何继承类修改它的意义和实现。</p>
+<p>第二、高效。编译器在遇到调用final方法时会转入内嵌机制，大大提高执行效率。</p>
+<ol>
+<li>final类</li>
+</ol>
+<p>final类不能被继承，因此final类的成员方法没有机会被覆盖，默认都是final的。在设计类的时候，如果不需要其有子类，类的实现细节不允许改变，并且确信该类不会被扩展，那么设计为final类。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/30/Java中abstract详解/" itemprop="url">
+                  Java中abstract详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-30T23:47:09+08:00" content="2016-05-30">
+              2016-05-30
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/30/Java中abstract详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/30/Java中abstract详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Abstract可以修饰类、方法"><a href="#Abstract可以修饰类、方法" class="headerlink" title="Abstract可以修饰类、方法"></a>Abstract可以修饰类、方法</h2><p>修饰类，则该类必须被继承(与final永不会同时出现)，不可被实例化成对象。</p>
+<p>和接口以及其它基类一样，可以声明，作为编译时类型，但不能作为运行时类型。 </p>
+<p>修饰方法时，该方法为抽象方法，不需要实现，留给子类覆盖，子类覆盖后该方法才能生效。</p>
+<p>注意比较： </p>
+<ul>
+<li><p><code>private void print(){}；</code>此语句表示方法的空实现。 </p>
+</li>
+<li><p><code>Abstract void print()；</code> 此语句表示方法的抽象，无实现。  </p>
+</li>
+</ul>
+<p>如果一个类中有一个抽象方法，则该类一定是抽象类，反之，一个抽象类，可能有抽象方法。</p>
+<p>为了实现多态，父类必须有定义，而不实现，留给子类实现，此时可将父类定义为abstract类。</p>
+<p>最后一点，修饰方法时，abstract与statci不能放一起，因为static不可被覆盖吗，而abstract生来就是为了被覆盖。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/30/Markdown——入门指南/" itemprop="url">
                   Markdown——入门指南
                 </a>
@@ -1025,7 +1255,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1035,7 +1265,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="主题," />
+  <meta name="keywords" content="final," />
 
 
 
@@ -84,16 +84,40 @@
 
 
 
-<meta name="description" content="该主题fork自 github安装方法参考 iissnan.com">
+<meta name="description" content="final变量
+
+变量一旦被初始化便不可改变(对基本类型来说，值不可变，对数组和对象来说，引用不可变)，初始化可以在两个地方，一是定义处，二是构造方法中，两者二选一。
+当函数参数为final类型时，可以读取该参数，但无法修改。
+当方法中的内部类在用到方法的参变量时，此参变也必须声明为final才可使用。
+
+final方法
+
+如果一个类不允许其子类覆盖某个方法，则可以把该方法声明为final方法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NexT主题">
-<meta property="og:url" content="http://yoursite.com/2016/05/18/next主题/index.html">
+<meta property="og:title" content="Javaz中final详解">
+<meta property="og:url" content="http://yoursite.com/2016/05/30/Java中final详解/index.html">
 <meta property="og:site_name" content="yanglg's blog">
-<meta property="og:description" content="该主题fork自 github安装方法参考 iissnan.com">
-<meta property="og:updated_time" content="2016-05-18T14:02:08.000Z">
+<meta property="og:description" content="final变量
+
+变量一旦被初始化便不可改变(对基本类型来说，值不可变，对数组和对象来说，引用不可变)，初始化可以在两个地方，一是定义处，二是构造方法中，两者二选一。
+当函数参数为final类型时，可以读取该参数，但无法修改。
+当方法中的内部类在用到方法的参变量时，此参变也必须声明为final才可使用。
+
+final方法
+
+如果一个类不允许其子类覆盖某个方法，则可以把该方法声明为final方法。">
+<meta property="og:updated_time" content="2016-05-31T02:30:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NexT主题">
-<meta name="twitter:description" content="该主题fork自 github安装方法参考 iissnan.com">
+<meta name="twitter:title" content="Javaz中final详解">
+<meta name="twitter:description" content="final变量
+
+变量一旦被初始化便不可改变(对基本类型来说，值不可变，对数组和对象来说，引用不可变)，初始化可以在两个地方，一是定义处，二是构造方法中，两者二选一。
+当函数参数为final类型时，可以读取该参数，但无法修改。
+当方法中的内部类在用到方法的参变量时，此参变也必须声明为final才可使用。
+
+final方法
+
+如果一个类不允许其子类覆盖某个方法，则可以把该方法声明为final方法。">
 
 
 
@@ -111,7 +135,7 @@
   };
 </script>
 
-  <title> NexT主题 | yanglg's blog </title>
+  <title> Javaz中final详解 | yanglg's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -241,7 +265,7 @@
             
             
               
-                NexT主题
+                Javaz中final详解
               
             
           </h1>
@@ -253,8 +277,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-18T17:27:04+08:00" content="2016-05-18">
-              2016-05-18
+            <time itemprop="dateCreated" datetime="2016-05-30T23:59:18+08:00" content="2016-05-30">
+              2016-05-30
             </time>
           </span>
 
@@ -264,8 +288,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/18/next主题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/18/next主题/" itemprop="commentsCount"></span>
+                <a href="/2016/05/30/Java中final详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/30/Java中final详解/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -288,7 +312,24 @@
       
 
       
-        <h1 id="该主题fork自-github"><a href="#该主题fork自-github" class="headerlink" title="该主题fork自 github"></a>该主题fork自 <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">github</a></h1><h1 id="安装方法参考-iissnan-com"><a href="#安装方法参考-iissnan-com" class="headerlink" title="安装方法参考 iissnan.com"></a>安装方法参考 <a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">iissnan.com</a></h1>
+        <ol>
+<li>final变量</li>
+</ol>
+<p>变量一旦被初始化便不可改变(对基本类型来说，值不可变，对数组和对象来说，引用不可变)，初始化可以在两个地方，一是定义处，二是构造方法中，两者二选一。</p>
+<p>当函数参数为final类型时，可以读取该参数，但无法修改。</p>
+<p>当方法中的内部类在用到方法的参变量时，此参变也必须声明为final才可使用。</p>
+<ol>
+<li>final方法</li>
+</ol>
+<p>如果一个类不允许其子类覆盖某个方法，则可以把该方法声明为final方法。</p>
+<p>使用final方法原因有二:</p>
+<p>第一、把方法锁定，防止任何继承类修改它的意义和实现。</p>
+<p>第二、高效。编译器在遇到调用final方法时会转入内嵌机制，大大提高执行效率。</p>
+<ol>
+<li>final类</li>
+</ol>
+<p>final类不能被继承，因此final类的成员方法没有机会被覆盖，默认都是final的。在设计类的时候，如果不需要其有子类，类的实现细节不允许改变，并且确信该类不会被扩展，那么设计为final类。</p>
+
       
     </div>
 
@@ -309,7 +350,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/主题/" rel="tag">#主题</a>
+            <a href="/tags/final/" rel="tag">#final</a>
           
         </div>
       
@@ -318,16 +359,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/18/markdown的超链接加上target-blank/" rel="next" title="markdown的超链接加上target='_blank'">
-                <i class="fa fa-chevron-left"></i> markdown的超链接加上target='_blank'
+              <a href="/2016/05/30/Java中abstract详解/" rel="next" title="Java中abstract详解">
+                <i class="fa fa-chevron-left"></i> Java中abstract详解
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/05/30/Markdown——入门指南/" rel="prev" title="Markdown——入门指南">
-                Markdown——入门指南 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/05/31/Java中static详解/" rel="prev" title="Java中static详解">
+                Java中static详解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -354,8 +395,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/05/18/next主题/"
-           data-title="NexT主题" data-url="http://yoursite.com/2016/05/18/next主题/">
+      <div class="ds-thread" data-thread-key="2016/05/30/Java中final详解/"
+           data-title="Javaz中final详解" data-url="http://yoursite.com/2016/05/30/Java中final详解/">
       </div>
     
   </div>
@@ -439,7 +480,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#该主题fork自-github"><span class="nav-number">1.</span> <span class="nav-text">该主题fork自 github</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装方法参考-iissnan-com"><span class="nav-number">2.</span> <span class="nav-text">安装方法参考 iissnan.com</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
         </section>
