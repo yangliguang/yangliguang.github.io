@@ -293,9 +293,23 @@
 
       
         
-          
-            
-          
+          <h2 id="Java关键字，当它修饰一个方法或者代码块时，能够保证在同一时刻最多只有一个线程执行该段代码。"><a href="#Java关键字，当它修饰一个方法或者代码块时，能够保证在同一时刻最多只有一个线程执行该段代码。" class="headerlink" title="Java关键字，当它修饰一个方法或者代码块时，能够保证在同一时刻最多只有一个线程执行该段代码。"></a>Java关键字，当它修饰一个方法或者代码块时，能够保证在同一时刻最多只有一个线程执行该段代码。</h2><ol>
+<li><p>当两个并发线程访问同一个对象object中的这个synchronized(this)同步代码块时，一个时间内只能有一个线程得到执行。另一个线程必须当前线程执行完这个代码块以后才能执行该代码块。</p>
+</li>
+<li><p>然而，当一个线程访问object的一个synchronized(this)同步代码块时，另一个线程仍然可以访问该object中的非synchronized(this)同步代码块。</p>
+</li>
+<li><p>尤其关键的是，当一个线程访问object的一个synchronized(this)同步代码时，其它线程对object中所有其它synchronized(this)同步代码块的访问将被阻塞。</p>
+</li>
+<li><p>第三个例子同样适用于其它同步代码块。也就是说，当一个线程访问object的一个synchronize(this)同步代码块时，它将获得这个object的对象锁。结果，其它线程对该object对象所有同步代码部分的访问将被暂时阻塞。</p>
+</li>
+<li><p>以上规则对其它对象锁同样适用。</p>
+</li>
+</ol>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/31/Java中synchronized详解/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
