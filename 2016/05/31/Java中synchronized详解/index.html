@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="static," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -84,25 +84,16 @@
 
 
 
-<meta name="description" content="static变量
-
-按照是否是静态，对类成员变量进行分类：一是static修饰的，叫静态变量或类变量，二是没有static修饰的，叫实例变量。两者的区别在于：
-静态变量在内存中只有一个拷贝(节约内存)，JVM只为静态变量分配一次内存，在加载类的过程中完成静态变量的内存分配，可用类名直接访问(方便)，当然也可以通过对象来访问(不推荐)。对于实例变量，每创建一个实例，JVM就会为实例变量分配一次内存">
+<meta name="description" content="I&apos;m hungry, I&apos;m foolish~">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中static详解">
-<meta property="og:url" content="http://yoursite.com/2016/05/31/Java中static详解/index.html">
+<meta property="og:title" content="Java中synchronized详解">
+<meta property="og:url" content="http://yoursite.com/2016/05/31/Java中synchronized详解/index.html">
 <meta property="og:site_name" content="yanglg's blog">
-<meta property="og:description" content="static变量
-
-按照是否是静态，对类成员变量进行分类：一是static修饰的，叫静态变量或类变量，二是没有static修饰的，叫实例变量。两者的区别在于：
-静态变量在内存中只有一个拷贝(节约内存)，JVM只为静态变量分配一次内存，在加载类的过程中完成静态变量的内存分配，可用类名直接访问(方便)，当然也可以通过对象来访问(不推荐)。对于实例变量，每创建一个实例，JVM就会为实例变量分配一次内存">
-<meta property="og:updated_time" content="2016-05-30T16:24:26.000Z">
+<meta property="og:description" content="I&apos;m hungry, I&apos;m foolish~">
+<meta property="og:updated_time" content="2016-05-30T16:26:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java中static详解">
-<meta name="twitter:description" content="static变量
-
-按照是否是静态，对类成员变量进行分类：一是static修饰的，叫静态变量或类变量，二是没有static修饰的，叫实例变量。两者的区别在于：
-静态变量在内存中只有一个拷贝(节约内存)，JVM只为静态变量分配一次内存，在加载类的过程中完成静态变量的内存分配，可用类名直接访问(方便)，当然也可以通过对象来访问(不推荐)。对于实例变量，每创建一个实例，JVM就会为实例变量分配一次内存">
+<meta name="twitter:title" content="Java中synchronized详解">
+<meta name="twitter:description" content="I&apos;m hungry, I&apos;m foolish~">
 
 
 
@@ -120,7 +111,7 @@
   };
 </script>
 
-  <title> Java中static详解 | yanglg's blog </title>
+  <title> Java中synchronized详解 | yanglg's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -250,7 +241,7 @@
             
             
               
-                Java中static详解
+                Java中synchronized详解
               
             
           </h1>
@@ -262,7 +253,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-31T00:11:42+08:00" content="2016-05-31">
+            <time itemprop="dateCreated" datetime="2016-05-31T00:26:01+08:00" content="2016-05-31">
               2016-05-31
             </time>
           </span>
@@ -273,8 +264,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/31/Java中static详解/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/31/Java中static详解/" itemprop="commentsCount"></span>
+                <a href="/2016/05/31/Java中synchronized详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/31/Java中synchronized详解/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -297,26 +288,7 @@
       
 
       
-        <ol>
-<li>static变量</li>
-</ol>
-<p>按照是否是静态，对类成员变量进行分类：一是static修饰的，叫静态变量或类变量，二是没有static修饰的，叫实例变量。两者的区别在于：</p>
-<p>静态变量在内存中只有一个拷贝(节约内存)，JVM只为静态变量分配一次内存，在加载类的过程中完成静态变量的内存分配，可用类名直接访问(方便)，当然也可以通过对象来访问(不推荐)。对于实例变量，每创建一个实例，JVM就会为实例变量分配一次内存，实例变量可以在内存中有多个拷贝，互不影响(灵活)。</p>
-<ol>
-<li>static方法</li>
-</ol>
-<p>静态方法可以通过类名调用，任何实例也可以调用，因此静态方法中不能用this和super关键字，不能直接访问所属类的实例变量和实例方法(即常见的静态方法不允许访问类的非静态方法)，只能访问所属类的静态变量和静态成员方法，因为static方法独立于任何实例，因此static方法必须被实现，而不能是抽象的(这也是static不能和abstract共用的原因)。</p>
-<ol>
-<li>static代码块</li>
-</ol>
-<p>也叫静态代码块，在类中独立于类成员的static语句块，可以有多个，位置随意放，JVM加载类的时候会执行，如果有多个，则按照在类中出现的先后顺序依次执行，仅执行一次。</p>
-<ol>
-<li>static和final共用</li>
-</ol>
-<p>static和final修饰成员变量和成员方法，可以简单理解为“全局变量”！</p>
-<p>对于变量，表示一旦给值不可修改，并且通过类名可以直接访问。</p>
-<p>对于方法，表示不可覆盖，并且可以通过类名直接访问。</p>
-
+        
       
     </div>
 
@@ -335,28 +307,18 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/static/" rel="tag">#static</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/30/Markdown——入门指南/" rel="next" title="Markdown——入门指南">
-                <i class="fa fa-chevron-left"></i> Markdown——入门指南
+              <a href="/2016/05/31/Java中static详解/" rel="next" title="Java中static详解">
+                <i class="fa fa-chevron-left"></i> Java中static详解
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/05/31/Java中synchronized详解/" rel="prev" title="Java中synchronized详解">
-                Java中synchronized详解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -382,8 +344,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/05/31/Java中static详解/"
-           data-title="Java中static详解" data-url="http://yoursite.com/2016/05/31/Java中static详解/">
+      <div class="ds-thread" data-thread-key="2016/05/31/Java中synchronized详解/"
+           data-title="Java中synchronized详解" data-url="http://yoursite.com/2016/05/31/Java中synchronized详解/">
       </div>
     
   </div>
