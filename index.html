@@ -253,6 +253,253 @@
             
               
                 
+                <a class="post-title-link" href="/2016/06/01/Java中的反射机制/" itemprop="url">
+                  Java中的反射机制
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-01T16:29:37+08:00" content="2016-06-01">
+              2016-06-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/01/Java中的反射机制/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Java中的反射机制/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/01/线性时间排序/" itemprop="url">
+                  线性时间排序
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-01T15:46:56+08:00" content="2016-06-01">
+              2016-06-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/01/线性时间排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/线性时间排序/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><p>之前接触的冒泡排序，快速排序，归并排序，堆排序等算法都存在比较，称为“比较排序”，时间复杂度下界是O(nlogn)，接下来介绍几种线性(O(n))排序算法。</p>
+<h2 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h2><h3 id="引出"><a href="#引出" class="headerlink" title="引出"></a>引出</h3><p>过程描述：假设待排序序列a中值的范围[0,k],其中k表示待排序序列中的最大值。首先用一个辅助数组count记录各个值在a中出现的次数，比如count[i]表示i在a中的个数。然后依次改变count中元素值，使count[i]表示a中不大于i的元素个数。然后从后往前扫描a数组，a中的元素根据count中的信息直接放到辅助数组b中。最后把有序序列b复制到a。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code>package sort;
+
+/**
+ * Author:Young
+ * Class Comment:
+ * Date: 2016年6月2日下午6:58:17
+ */
+public class CountingSort {
+    public static void main(String[] args) {
+        int[] nums = new int[10];
+        for(int i = 0; i &lt; 10; i++){
+            nums[i] = (int)(Math.random() * 10) + 90;
+        }
+        for(int i : nums)
+            System.out.print(i+&quot; &quot;);
+        System.out.println();
+        sort(nums, 100);
+        for(int i : nums)
+            System.out.print(i+&quot; &quot;);
+    }
+
+    public static void sort(int[] nums, int max){
+        int[] count = new int[max+1];
+        for(int i : nums)
+            count[i]++;
+        for(int i = 0, j = 0; i &lt; count.length; i++){
+            while(count[i] &gt; 0){
+                nums[j++] = i;
+                count[i]--;
+            }
+        }
+    }
+}
+</code></pre><p>输出结果：</p>
+<pre><code>93 99 94 94 91 94 95 93 95 95 
+91 93 93 94 94 94 95 95 95 99 
+</code></pre><h3 id="效率分析"><a href="#效率分析" class="headerlink" title="效率分析"></a>效率分析</h3><p>从代码看，一个one pass的for循环，O(n),一个for和while的嵌套循环，O(max+n),时间复杂度不变，可见计数排序是稳定的，辅助空间max. 有三个约束条件：</p>
+<ul>
+<li>数组取值范围[0,max]</li>
+<li>元素值需是非负数</li>
+<li>max的值不能太大</li>
+</ul>
+<h2 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h2>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/06/01/线性时间排序/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/31/Java-Object类源代码详解-及native/" itemprop="url">
                   Java Object类源代码详解 及native
                 </a>
@@ -1145,114 +1392,13 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/17/hello-jingjing/" itemprop="url">
-                  安装hexo,发布到github
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-17T14:37:35+08:00" content="2016-05-17">
-              2016-05-17
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/17/hello-jingjing/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/17/hello-jingjing/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>首先，安装git,node.js,hexo<br>参考：<a href="http://www.cnblogs.com/zhcncn/p/4097881.html" target="_blank" rel="external">http://www.cnblogs.com/zhcncn/p/4097881.html</a></p>
-<p>修改配置文件，并安装deployer-git<br>参考：<a href="http://blog.163.com/gis_warrior/blog/static/19361717320153100184696/" target="_blank" rel="external">http://blog.163.com/gis_warrior/blog/static/19361717320153100184696/</a></p>
-<p>发布到github,创建热点，windows下检查ssh连接github是否正常，无法连接需要配置ssh ky<br>参考：<a href="http://jingyan.baidu.com/article/a65957f4e91ccf24e77f9b11.html" target="_blank" rel="external">http://jingyan.baidu.com/article/a65957f4e91ccf24e77f9b11.html</a></p>
-<p>发布第一条博文<br>参考：<a href="http://ninghao.net/blog/1412" target="_blank" rel="external">http://ninghao.net/blog/1412</a></p>
-<p>博文的中文乱码问题<br>source-&gt;_posts目录找到md文件，另存为utf8格式文件即可。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1291,7 +1437,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1301,7 +1447,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

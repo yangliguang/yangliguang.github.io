@@ -1,0 +1,812 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="计数排序， 基数排序， 桶排序," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="序言之前接触的冒泡排序，快速排序，归并排序，堆排序等算法都存在比较，称为“比较排序”，时间复杂度下界是O(nlogn)，接下来介绍几种线性(O(n))排序算法。
+计数排序引出过程描述：假设待排序序列a中值的范围[0,k],其中k表示待排序序列中的最大值。首先用一个辅助数组count记录各个值在a中出现的次数，比如count[i]表示i在a中的个数。然后依次改变count中元素值，使count[i]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性时间排序">
+<meta property="og:url" content="http://yoursite.com/2016/06/01/线性时间排序/index.html">
+<meta property="og:site_name" content="yanglg's blog">
+<meta property="og:description" content="序言之前接触的冒泡排序，快速排序，归并排序，堆排序等算法都存在比较，称为“比较排序”，时间复杂度下界是O(nlogn)，接下来介绍几种线性(O(n))排序算法。
+计数排序引出过程描述：假设待排序序列a中值的范围[0,k],其中k表示待排序序列中的最大值。首先用一个辅助数组count记录各个值在a中出现的次数，比如count[i]表示i在a中的个数。然后依次改变count中元素值，使count[i]">
+<meta property="og:updated_time" content="2016-06-02T16:11:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线性时间排序">
+<meta name="twitter:description" content="序言之前接触的冒泡排序，快速排序，归并排序，堆排序等算法都存在比较，称为“比较排序”，时间复杂度下界是O(nlogn)，接下来介绍几种线性(O(n))排序算法。
+计数排序引出过程描述：假设待排序序列a中值的范围[0,k],其中k表示待排序序列中的最大值。首先用一个辅助数组count记录各个值在a中出现的次数，比如count[i]表示i在a中的个数。然后依次改变count中元素值，使count[i]">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 线性时间排序 | yanglg's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?c9adb5e4ad5cc12942113746323ea104";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">yanglg's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                线性时间排序
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-01T15:46:56+08:00" content="2016-06-01">
+              2016-06-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/01/线性时间排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/线性时间排序/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><p>之前接触的冒泡排序，快速排序，归并排序，堆排序等算法都存在比较，称为“比较排序”，时间复杂度下界是O(nlogn)，接下来介绍几种线性(O(n))排序算法。</p>
+<h2 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h2><h3 id="引出"><a href="#引出" class="headerlink" title="引出"></a>引出</h3><p>过程描述：假设待排序序列a中值的范围[0,k],其中k表示待排序序列中的最大值。首先用一个辅助数组count记录各个值在a中出现的次数，比如count[i]表示i在a中的个数。然后依次改变count中元素值，使count[i]表示a中不大于i的元素个数。然后从后往前扫描a数组，a中的元素根据count中的信息直接放到辅助数组b中。最后把有序序列b复制到a。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code>package sort;
+
+/**
+ * Author:Young
+ * Class Comment:
+ * Date: 2016年6月2日下午6:58:17
+ */
+public class CountingSort {
+    public static void main(String[] args) {
+        int[] nums = new int[10];
+        for(int i = 0; i &lt; 10; i++){
+            nums[i] = (int)(Math.random() * 10) + 90;
+        }
+        for(int i : nums)
+            System.out.print(i+&quot; &quot;);
+        System.out.println();
+        sort(nums, 100);
+        for(int i : nums)
+            System.out.print(i+&quot; &quot;);
+    }
+
+    public static void sort(int[] nums, int max){
+        int[] count = new int[max+1];
+        for(int i : nums)
+            count[i]++;
+        for(int i = 0, j = 0; i &lt; count.length; i++){
+            while(count[i] &gt; 0){
+                nums[j++] = i;
+                count[i]--;
+            }
+        }
+    }
+}
+</code></pre><p>输出结果：</p>
+<pre><code>93 99 94 94 91 94 95 93 95 95 
+91 93 93 94 94 94 95 95 95 99 
+</code></pre><h3 id="效率分析"><a href="#效率分析" class="headerlink" title="效率分析"></a>效率分析</h3><p>从代码看，一个one pass的for循环，O(n),一个for和while的嵌套循环，O(max+n),时间复杂度不变，可见计数排序是稳定的，辅助空间max. 有三个约束条件：</p>
+<ul>
+<li>数组取值范围[0,max]</li>
+<li>元素值需是非负数</li>
+<li>max的值不能太大</li>
+</ul>
+<h2 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h2><a id="more"></a>
+<h3 id="引出-1"><a href="#引出-1" class="headerlink" title="引出"></a>引出</h3><p>在计数排序中,空间复杂度O(max),max很大时，时间和空间开销都很大(比如只有10个数，最小0， 最大10000，显然用计数排序效率会大打折扣)，效率甚至不如比较排序，于是可以把待排序记录分解成个位(第一位)，十位(第二位)…然后分别以第一位，第二位…对整个序列进行计数排序，这样max=9.<br>例子：<br>73, 22, 93, 43, 55, 14, 28, 65, 39, 81<br>范围0~100，最多两位，第一趟：<br>第一位(个位)：</p>
+<pre><code>0
+1 81
+2 22
+3 73 93 43
+4 14
+5 55 65
+6
+7
+8 28
+9 39
+</code></pre><p>重新串联起来：</p>
+<pre><code>81, 22, 73, 93, 43, 14, 55, 65, 28, 39
+</code></pre><p>第二位(十位)：</p>
+<pre><code>0
+1 14
+2 22 28
+3 39
+4 43
+5 55
+6 65
+7 73
+8 81
+9 93
+</code></pre><p>重新串联起来：</p>
+<pre><code>14, 22, 28, 39, 43, 55, 65, 73, 81, 93
+</code></pre><p>达到有序状态。</p>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><pre><code>package sort;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * Author:Young
+ * Class Comment:
+ * Date: 2016年6月2日下午8:41:42
+ */
+public class RadixSort {
+    public static void main(String[] args) {
+        int[] nums = new int[10];
+        for(int i = 0; i &lt; 10; i++){
+            nums[i] = (int)(Math.random() * 500) + 500;
+        }
+        for(int i : nums)
+            System.out.print(i+&quot; &quot;);
+        System.out.println();
+        sort(nums, 1000, 4);
+        for(int i : nums)
+            System.out.print(i+&quot; &quot;);
+    }
+
+    public static void sort(int[] nums, int max, int d){
+        for(int i = 0; i &lt; d; i++){
+            @SuppressWarnings(&quot;unchecked&quot;)
+            Queue&lt;Integer&gt;[] count = new LinkedList[10];
+            for(int ii = 0;ii &lt; 10; ii++){  
+                count[ii] = new LinkedList&lt;Integer&gt;();  
+            }  
+            for(int num : nums)
+                count[num/((int)(Math.pow(10, d)))%10].add(num);
+            int p1 = 0;
+            for(int j = 0; j &lt; 10; j++){
+                while(count[j].size() &gt; 0){
+                    nums[p1++] = count[j].poll();
+                }
+            }
+        }
+    }
+
+}
+</code></pre><p>输出结果：</p>
+<pre><code>856 537 583 627 817 942 682 745 565 918 
+537 565 583 627 682 745 817 856 918 942 
+</code></pre><h3 id="效率分析-1"><a href="#效率分析-1" class="headerlink" title="效率分析"></a>效率分析</h3><p>根据代码，最大数max,最多位数的d, 时间复杂度<code>O(d*10*max)</code>,视为<code>O(n)</code>,是稳定的，辅助空间也是<code>d*n</code>(使用队列或链表),约束条件同计数排序.</p>
+<h2 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h2><h3 id="引出-2"><a href="#引出-2" class="headerlink" title="引出"></a>引出</h3><p>桶排序：桶排序的思想是把区间[0,1)划分成n个相同大小的子区间，称为桶，然后将n个输入数分布到各个桶中去。 因为输入数均匀且独立分布在[0,1)上，所以，一般不会有很多数落在一个桶中的情况。为了得到结果，先对各个桶中的数进行排序，然后按次序把各桶中的元素列出来。 </p>
+<h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><pre><code>package sort;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+ * Author:Young Class Comment: 
+ * 桶排序：桶排序的思想是把区间[0,1)划分成n个相同大小的子区间，称为桶，
+ * 然后将n个输入数分布到各个桶中去。 因为输入数均匀且独立分布在[0,1)上，所以，一般不会有很多数落在一个桶中的情况。
+ * 为了得到结果，先对各个桶中的数进行排序，然后按次序把各桶中的元素列出来。 桶排序的时间复杂度为O(n) 若有n个待排数据，m个桶，空间复杂度为O(n+m)
+ * Date: 2016年6月2日下午6:55:24
+ */
+
+public class BucketSort {
+
+    /**
+     * 桶排序算法，对arr进行桶排序，排序结果仍放在arr中
+     * 
+     * @param arr
+     */
+    public static void bucketSort(double arr[]) {
+
+        int n = arr.length;
+
+        ArrayList arrList[] = new ArrayList[n];
+        // 把arr中的数均匀的的分布到[0,1)上，每个桶是一个list，存放落在此桶上的元素
+        for (int i = 0; i &lt; n; i++) {
+            int temp = (int) Math.floor(n * arr[i]);
+            if (null == arrList[temp])
+                arrList[temp] = new ArrayList();
+            arrList[temp].add(arr[i]);
+        }
+
+        // 对每个桶中的数进行插入排序
+        for (int i = 0; i &lt; n; i++) {
+            if (null != arrList[i])
+                insert(arrList[i]);
+        }
+
+        // 把各个桶的排序结果合并
+        int count = 0;
+
+        for (int i = 0; i &lt; n; i++) {
+            if (null != arrList[i]) {
+                Iterator iter = arrList[i].iterator();
+                while (iter.hasNext()) {
+                    Double d = (Double) iter.next();
+                    arr[count] = d;
+                    count++;
+                }
+            }
+        }
+    }
+
+    /**
+     * 用插入排序对每个桶进行排序
+     * 
+     * @param list
+     */
+    public static void insert(ArrayList list) {
+
+        if (list.size() &gt; 1) {
+            for (int i = 1; i &lt; list.size(); i++) {
+                if ((Double) list.get(i) &lt; (Double) list.get(i - 1)) {
+                    double temp = (Double) list.get(i);
+                    int j = i - 1;
+                    for (; j &gt;= 0
+                            &amp;&amp; ((Double) list.get(j) &gt; (Double) list.get(j + 1)); j--)
+                        list.set(j + 1, list.get(j));
+                    list.set(j + 1, temp);
+                }
+            }
+        }
+
+    }
+}
+</code></pre><h3 id="效率分析-2"><a href="#效率分析-2" class="headerlink" title="效率分析"></a>效率分析</h3><p>桶排序的时间复杂度为O(n) 若有n个待排数据，m个桶，空间复杂度为O(n+m)。</p>
+<p>参考：</p>
+<ul>
+<li>《算法导论》</li>
+<li><a href="http://blog.csdn.net/touch_2011/article/details/6787127" target="_blank" rel="external">漫谈经典排序算法</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计数排序，-基数排序，-桶排序/" rel="tag">#计数排序， 基数排序， 桶排序</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/31/Java-Object类源代码详解-及native/" rel="next" title="Java Object类源代码详解 及native">
+                <i class="fa fa-chevron-left"></i> Java Object类源代码详解 及native
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/01/Java中的反射机制/" rel="prev" title="Java中的反射机制">
+                Java中的反射机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/01/线性时间排序/"
+           data-title="线性时间排序" data-url="http://yoursite.com/2016/06/01/线性时间排序/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://yanglg.me/about/img/about_pic.jpg"
+               alt="yangliguang" />
+          <p class="site-author-name" itemprop="name">yangliguang</p>
+          <p class="site-description motion-element" itemprop="description">I'm hungry, I'm foolish~</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序言"><span class="nav-number">1.</span> <span class="nav-text">序言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计数排序"><span class="nav-number">2.</span> <span class="nav-text">计数排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引出"><span class="nav-number">2.1.</span> <span class="nav-text">引出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">2.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#效率分析"><span class="nav-number">2.3.</span> <span class="nav-text">效率分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基数排序"><span class="nav-number">3.</span> <span class="nav-text">基数排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引出-1"><span class="nav-number">3.1.</span> <span class="nav-text">引出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-1"><span class="nav-number">3.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#效率分析-1"><span class="nav-number">3.3.</span> <span class="nav-text">效率分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#桶排序"><span class="nav-number">4.</span> <span class="nav-text">桶排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引出-2"><span class="nav-number">4.1.</span> <span class="nav-text">引出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-2"><span class="nav-number">4.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#效率分析-2"><span class="nav-number">4.3.</span> <span class="nav-text">效率分析</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangliguang</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"github-hexo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
