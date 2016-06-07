@@ -84,16 +84,19 @@
 
 
 
-<meta name="description" content="I&apos;m hungry, I&apos;m foolish~">
+<meta name="description" content="什么是native方法“A native method is a Java method whose implementation is provided by non-java code.”
+简单地讲，一个Native Method就是一个java调用非java代码的接口。一个Native Method是这样一个java的方法：该方法的实现由非java语言实现，比如C。这个特征并非java所特有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java Object类源代码详解 及native">
 <meta property="og:url" content="http://yoursite.com/2016/05/31/Java-Object类源代码详解-及native/index.html">
 <meta property="og:site_name" content="yanglg's blog">
-<meta property="og:description" content="I&apos;m hungry, I&apos;m foolish~">
-<meta property="og:updated_time" content="2016-06-06T01:01:59.000Z">
+<meta property="og:description" content="什么是native方法“A native method is a Java method whose implementation is provided by non-java code.”
+简单地讲，一个Native Method就是一个java调用非java代码的接口。一个Native Method是这样一个java的方法：该方法的实现由非java语言实现，比如C。这个特征并非java所特有">
+<meta property="og:updated_time" content="2016-06-07T11:12:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java Object类源代码详解 及native">
-<meta name="twitter:description" content="I&apos;m hungry, I&apos;m foolish~">
+<meta name="twitter:description" content="什么是native方法“A native method is a Java method whose implementation is provided by non-java code.”
+简单地讲，一个Native Method就是一个java调用非java代码的接口。一个Native Method是这样一个java的方法：该方法的实现由非java语言实现，比如C。这个特征并非java所特有">
 
 
 
@@ -298,7 +301,109 @@
       
 
       
-        
+        <h2 id="什么是native方法"><a href="#什么是native方法" class="headerlink" title="什么是native方法"></a>什么是native方法</h2><p>“A native method is a Java method whose implementation is provided by non-java code.”</p>
+<p>简单地讲，一个Native Method就是一个java调用非java代码的接口。一个Native Method是这样一个java的方法：该方法的实现由非java语言实现，比如C。这个特征并非java所特有，很多其它的编程语言都有这一机制，比如在C＋＋中，你可以用extern “C”告知C++编译器去调用一个C的函数。</p>
+<a id="more"></a>
+<p>在定义一个native method时，并不提供实现体（有些像定义一个java interface），因为其实现体是由非java语言在外面实现的。，下面给了一个示例：    </p>
+<pre><code>public native int hashCode();   
+</code></pre><p>标识符native可以与所有其它的java标识符连用，但是abstract除外。这是合理的，因为native暗示这些方法是有实现体的，只不过这些实现体是非java的，但是abstract却显然的指明这些方法无实现体。</p>
+<p>native与其它java标识符连用时，其意义同非Native Method并无差别，比如native static表明这个方法可以在不产生类的实例时直接调用，这非常方便，比如当你想用一个native method去调用一个C的类库时。</p>
+<p>native synchronized连用则表示JVM在进入这个方法的实现体之前会执行同步锁机制（就像java的多线程。）</p>
+<p>一个native method方法可以返回任何java类型，包括非基本类型，而且同样可以进行异常控制。这些方法的实现体可以制一个异常并且将其抛出，这一点与java的方法非常相似。当一个native method接收到一些非基本类型时如Object或一个整型数组时，这个方法可以访问这些基本类型的内部，但是这将使这个native方法依赖于你所访问的java类的实现。</p>
+<p>有一点要牢牢记住：我们可以在一个native method的本地实现中访问所有的java特性，但是这要依赖于你所访问的java特性的实现，而且这样做远远不如在java语言中使用那些特性方便和容易。</p>
+<p>native method的存在并不会对其他类调用这些本地方法产生任何影响，实际上调用这些方法的其他类甚至不知道它所调用的是一个本地方法。JVM将控制调用本地方法的所有细节。需要注意当我们将一个本地方法声明为final的情况。用java实现的方法体在被编译时可能会因为内联而产生效率上的提升。但是一个native final方法是否也能获得这样的好处却是值得怀疑的，但是这只是一个代码优化方面的问题，对功能实现没有影响。</p>
+<p>如果一个含有本地方法的类被继承，子类会继承这个本地方法并且可以用java语言重写这个方法（这个似乎看起来有些奇怪），同样的如果一个本地方法被fianl标识，它被继承后不能被重写。</p>
+<p>本地方法非常有用，因为它有效地扩充了jvm.事实上，我们所写的java代码已经用到了本地方法，在sun的java的并发（多线程）的机制实现中，许多与操作系统的接触点都用到了本地方法，这使得java程序能够超越java运行时的界限。有了本地方法，java程序可以做任何应用层次的任务。</p>
+<h2 id="为什么要使用native方法"><a href="#为什么要使用native方法" class="headerlink" title="为什么要使用native方法"></a>为什么要使用native方法</h2><p>Java使用起来非常方便，然而有些层次的任务用java实现起来不容易，或者我们对程序的效率很在意时，问题就来了：</p>
+<ul>
+<li>与java环境外交互：</li>
+</ul>
+<p>有时java应用需要与java外面的环境交互。这是本地方法存在的主要原因，你可以想想java需要与一些底层系统如操作系统或某些硬件交换信息时的情况。本地方法正是这样一种交流机制：它为我们提供了一个非常简洁的接口，而且我们无需去了解java应用之外的繁琐的细节。</p>
+<ul>
+<li>与操作系统交互：</li>
+</ul>
+<p>JVM支持着java语言本身和运行时库，它是java程序赖以生存的平台，它由一个解释器（解释字节码）和一些连接到本地代码的库组成。然而不管怎 样，它毕竟不是一个完整的系统，它经常依赖于一些底层（underneath在下面的）系统的支持。这些底层系统常常是强大的操作系统。通过使用本地方法，我们得以用java实现了jre的与底层系统的交互，甚至JVM的一些部分就是用C写的，还有，如果我们要使用一些java语言本身没有提供封装的操作系统的特性时，我们也需要使用本地方法。</p>
+<ul>
+<li>Sun’s Java</li>
+</ul>
+<p>Sun的解释器是用C实现的，这使得它能像一些普通的C一样与外部交互。jre大部分是用java实现的，它也通过一些本地方法与外界交互。例如：类java.lang.Thread 的 setPriority()方法是用java实现的，但是它实现调用的是该类里的本地方法setPriority0()。这个本地方法是用C实现的，并被植入JVM内部，在Windows 95的平台上，这个本地方法最终将调用Win32 SetPriority() API。这是一个本地方法的具体实现由JVM直接提供，更多的情况是本地方法由外部的动态链接库（external dynamic link library）提供，然后被JVM调用。</p>
+<h2 id="JVM怎样使Native-Method跑起来"><a href="#JVM怎样使Native-Method跑起来" class="headerlink" title="JVM怎样使Native Method跑起来"></a>JVM怎样使Native Method跑起来</h2><p>我们知道，当一个类第一次被使用到时，这个类的字节码会被加载到内存，并且只会加载一次。在这个被加载的字节码的入口维持着一个该类所有方法描述符的list，这些方法描述符包含这样一些信息：方法代码存于何处，它有哪些参数，方法的描述符（public之类）等等。</p>
+<p>如果一个方法描述符内有native，这个描述符块将有一个指向该方法的实现的指针。这些实现在一些DLL文件内，但是它们会被操作系统加载到java程序的地址空间。当一个带有本地方法的类被加载时，其相关的DLL并未被加载，因此指向方法实现的指针并不会被设置。当本地方法被调用之前，这些DLL才会被加载，这是通过调用java.system.loadLibrary()实现的。</p>
+<p>最后需要提示的是，使用本地方法是有开销的，它丧失了java的很多好处。如果别无选择，我们可以选择使用本地方法。</p>
+<h2 id="Object源代码如下"><a href="#Object源代码如下" class="headerlink" title="Object源代码如下:"></a>Object源代码如下:</h2><pre><code>package java.lang;   
+public class Object {   
+
+   /* 一个本地方法，具体是用C（C++）在DLL中实现的，然后通过JNI调用。*/    
+    private static native void registerNatives();   
+  /* 对象初始化时自动调用此方法*/  
+    static {   
+        registerNatives();   
+    }   
+   /* 返回此 Object 的运行时类。*/  
+    public final native Class&lt;?&gt; getClass();   
+
+/*  
+hashCode 的常规协定是：  
+1.在 Java 应用程序执行期间，在对同一对象多次调用 hashCode 方法时，必须一致地返回相同的整数，前提是将对象进行 equals 比较时所用的信息没有被修改。从某一应用程序的一次执行到同一应用程序的另一次执行，该整数无需保持一致。   
+2.如果根据 equals(Object) 方法，两个对象是相等的，那么对这两个对象中的每个对象调用 hashCode 方法都必须生成相同的整数结果。   
+3.如果根据 equals(java.lang.Object) 方法，两个对象不相等，那么对这两个对象中的任一对象上调用 hashCode 方法不 要求一定生成不同的整数结果。但是，程序员应该意识到，为不相等的对象生成不同整数结果可以提高哈希表的性能。  
+*/  
+
+    public native int hashCode();   
+
+
+    public boolean equals(Object obj) {   
+    return (this == obj);   
+    }   
+
+    /*本地CLONE方法，用于对象的复制。*/  
+    protected native Object clone() throws CloneNotSupportedException;   
+
+    /*返回该对象的字符串表示。非常重要的方法*/  
+    public String toString() {   
+    return getClass().getName() + &quot;@&quot; + Integer.toHexString(hashCode());   
+    }   
+
+   /*唤醒在此对象监视器上等待的单个线程。*/  
+    public final native void notify();   
+
+   /*唤醒在此对象监视器上等待的所有线程。*/  
+    public final native void notifyAll();   
+
+
+/*在其他线程调用此对象的 notify() 方法或 notifyAll() 方法前，导致当前线程等待。换句话说，此方法的行为就好像它仅执行 wait(0) 调用一样。   
+当前线程必须拥有此对象监视器。该线程发布对此监视器的所有权并等待，直到其他线程通过调用 notify 方法，或 notifyAll 方法通知在此对象的监视器上等待的线程醒来。然后该线程将等到重新获得对监视器的所有权后才能继续执行。*/  
+    public final void wait() throws InterruptedException {   
+    wait(0);   
+    }   
+
+
+
+   /*在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量前，导致当前线程等待。*/  
+    public final native void wait(long timeout) throws InterruptedException;   
+
+    /* 在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者其他某个线程中断当前线程，或者已超过某个实际时间量前，导致当前线程等待。*/  
+    public final void wait(long timeout, int nanos) throws InterruptedException {   
+        if (timeout &lt; 0) {   
+            throw new IllegalArgumentException(&quot;timeout value is negative&quot;);   
+        }   
+
+        if (nanos &lt; 0 || nanos &gt; 999999) {   
+            throw new IllegalArgumentException(   
+                &quot;nanosecond timeout value out of range&quot;);   
+        }   
+
+    if (nanos &gt;= 500000 || (nanos != 0 &amp;&amp; timeout == 0)) {   
+        timeout++;   
+    }   
+
+    wait(timeout);   
+    }   
+
+    /*当垃圾回收器确定不存在对该对象的更多引用时，由对象的垃圾回收器调用此方法。*/  
+    protected void finalize() throws Throwable { }   
+}  
+</code></pre>
       
     </div>
 
@@ -449,7 +554,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是native方法"><span class="nav-number">1.</span> <span class="nav-text">什么是native方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要使用native方法"><span class="nav-number">2.</span> <span class="nav-text">为什么要使用native方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM怎样使Native-Method跑起来"><span class="nav-number">3.</span> <span class="nav-text">JVM怎样使Native Method跑起来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object源代码如下"><span class="nav-number">4.</span> <span class="nav-text">Object源代码如下:</span></a></li></ol></div>
             
           </div>
         </section>
